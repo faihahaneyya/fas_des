@@ -1,9 +1,36 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Warga</title>
 
-@section('title', 'Data Warga')
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-@section('content')
+    <style>
+        body {
+            background-color: #DFF2D8;
+        }
+        .card-custom {
+            background-color: #E9F5E6;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+        .emoji {
+            font-size: 45px;
+        }
+    </style>
+</head>
+<body>
+
 <div class="container py-5">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-dark">📋 Data Warga</h2>
         <a href="{{ route('warga.create') }}" class="btn btn-success shadow-sm">
@@ -11,58 +38,55 @@
         </a>
     </div>
 
-    <div class="card border-0 shadow-lg rounded-4">
-        <div class="card-body">
-            <table class="table table-hover align-middle text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>No KTP</th>
-                        <th>Nama</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Agama</th>
-                        <th>Pekerjaan</th>
-                        <th>Telepon</th>
-                        <th>Email</th>
-                        <th style="width: 150px;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($warga as $index => $item)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $item->no_ktp }}</td>
-                            <td>{{ $item->nama }}</td>
-                            <td>{{ $item->jenis_kelamin }}</td>
-                            <td>{{ $item->agama }}</td>
-                            <td>{{ $item->pekerjaan }}</td>
-                            <td>{{ $item->telp }}</td>
-                            <td>{{ $item->email }}</td>
-                            <td>
-                                <a href="{{ route('warga.edit', $item->warga_id) }}"
-                                   class="btn btn-warning btn-sm me-1 shadow-sm">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm shadow-sm"
-                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                        <i class="bi bi-trash3-fill"></i> Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" class="text-muted py-4">
-                                <i class="bi bi-emoji-frown"></i> Belum ada data warga.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+    <div class="row">
+        @forelse ($warga as $item)
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card card-custom text-center p-4">
+
+                    <!-- Emoji jenis kelamin -->
+                    <div class="emoji">
+                        @if($item->jenis_kelamin == 'Laki-laki')
+                            👩
+                        @else
+                            👩
+                        @endif
+                    </div>
+
+                    <h4 class="fw-bold text-success mt-3">{{ $item->nama }}</h4>
+                    <p class="text-muted small mb-2">{{ $item->pekerjaan }} • {{ $item->agama }}</p>
+
+                    <div class="text-secondary small">
+                        📞 {{ $item->telp }} <br>
+                        ✉️ {{ $item->email }}
+                    </div>
+
+                    <div class="d-flex justify-content-between px-3 mt-4">
+                        <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn btn-warning btn-sm">
+                            ✏️ Edit
+                        </a>
+
+                        <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                🗑️ Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-12 text-center py-5 text-muted">
+                <p class="fs-4">Belum ada data warga 😢</p>
+            </div>
+        @endforelse
     </div>
+
 </div>
-@endsection
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
