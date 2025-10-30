@@ -1,3 +1,4 @@
+<!-- Partial View: Peminjaman Berhasil Start -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -87,13 +88,19 @@
     </style>
 </head>
 <body>
+    <!-- Konten Pemberitahuan Start -->
     <h1>Peminjaman Berhasil!</h1>
     <p>Terima kasih, {{ session('nama') }}. Data peminjaman Anda telah disimpan.</p>
 
+    <!-- Tombol Aksi Start -->
     <div class="btn-group">
-        <a href="{{ route('peminjaman.create') }}" class="btn-custom btn-form">Kembali ke Form</a>
+        <a href="{{ route('BalaiDesa.form-peminjaman') }}" class="btn-custom btn-form">Kembali ke Form</a>
+
         <a href="/dashboard" class="btn-custom btn-dashboard">Kembali ke Dashboard</a>
     </div>
+    <!-- Tombol Aksi End -->
+    <!-- Konten Pemberitahuan End -->
 
 </body>
 </html>
+<!-- Partial View: Peminjaman Berhasil End -->

@@ -1,3 +1,4 @@
+<!-- Partial View: Pinjam Fasilitas Form Start -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -80,15 +81,16 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
+    <!-- Header Start -->
     <header class="bg-gradient-to-r from-green-600 to-green-800 text-white p-6 text-center">
         <h1 class="text-3xl font-bold">Form Peminjaman Fasilitas</h1>
         <p class="text-lg mt-2">Isi form untuk meminjam {{ $fasilitas->nama_fasilitas }}</p>
     </header>
+    <!-- Header End -->
 
-    <!-- Main Content -->
+    <!-- Main Content Start -->
     <div class="main-content">
-        <!-- Flash Messages -->
+        <!-- Flash Messages Start -->
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                 {{ session('success') }}
@@ -100,18 +102,21 @@
                 {{ session('error') }}
             </div>
         @endif
+        <!-- Flash Messages End -->
 
         <h2 class="section-title">Form Peminjaman</h2>
 
         <div class="form-container">
-            <!-- Info Fasilitas -->
+            <!-- Info Fasilitas Start -->
             <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                 <h3 class="font-bold text-green-800 text-lg mb-2">Anda akan meminjam:</h3>
                 <p class="text-green-700"><strong>{{ $fasilitas->nama_fasilitas }}</strong></p>
                 <p class="text-green-700">Kapasitas: {{ $fasilitas->kapasitas }} orang</p>
                 <p class="text-green-700">Lokasi: {{ $fasilitas->lokasi }}</p>
             </div>
+            <!-- Info Fasilitas End -->
 
+            <!-- Form Peminjaman Start -->
             <form action="{{ route('pinjam.store', $fasilitas->id) }}" method="POST">
                 @csrf
 
@@ -195,7 +200,10 @@
                     <button type="submit" class="btn-submit">Ajukan Peminjaman</button>
                 </div>
             </form>
+            <!-- Form Peminjaman End -->
         </div>
     </div>
+    <!-- Main Content End -->
 </body>
 </html>
+<!-- Partial View: Pinjam Fasilitas Form End -->

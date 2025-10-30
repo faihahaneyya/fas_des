@@ -218,47 +218,23 @@
 
         /* Animations */
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         @keyframes bounce {
@@ -272,40 +248,18 @@
         }
 
         @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-            70% {
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (max-width: 480px) {
-            .form-content {
-                padding: 30px 20px;
-            }
-
-            .header {
-                padding: 30px 20px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
+            .form-content { padding: 30px 20px; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 20px; }
         }
     </style>
 </head>
@@ -334,12 +288,11 @@
                 </div>
             @endif
 
-           <form action="{{ route('auth.login') }}" method="POST">
-
+            <form action="{{ route('auth.login') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Masukkan username Anda" required>
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" placeholder="Masukkan email Anda" required>
                 </div>
 
                 <div class="form-group">
@@ -351,6 +304,11 @@
                     Masuk ke Sistem
                 </button>
             </form>
+
+            <!-- LINK KE REGISTER -->
+            <p style="text-align:center; margin-top:15px; font-size:14px;">
+                Belum punya akun? <a href="{{ route('register') }}" style="color:#4a6b4a; font-weight:600;">Daftar di sini</a>
+            </p>
 
             <div class="footer">
                 &copy; 2024 Sistem Peminjaman Ruangan Desa

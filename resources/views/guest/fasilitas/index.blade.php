@@ -1,6 +1,10 @@
+{{-- Layout Container Start --}}
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
+      {{-- Head Section --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fasilitas Ruangan Desa</title>
@@ -143,15 +147,23 @@
     </style>
 </head>
 <body>
+
+     {{-- Page Wrapper Start --}}
+
     <div class="container">
+
+          {{-- Head Section --}}
         <header>
             <h1>Fasilitas Ruangan Desa</h1>
             <p>Pinjam ruangan untuk acara dan kegiatan Anda</p>
         </header>
 
+              {{-- Fasilitas Section --}}
         <section>
             <h2>Daftar Fasilitas</h2>
             <div class="facilities-grid">
+
+                  {{-- Kartu Fasilitas --}}
     <div class="facility-card">
         <h3>Balai Desa</h3>
         <p class="capacity">Kapasitas: 100 orang - Free</p>
@@ -178,6 +190,8 @@
 </div>
         </section>
 
+        {{-- Aktivitas Terkini Section --}}
+
         <section class="recent-activities">
             <h2>Aktivitas Terkini</h2>
             <ul class="activity-list">
@@ -196,9 +210,13 @@
             </ul>
         </section>
 
+
+         {{-- Footer Section --}}
         <footer>
             <p>&copy; 2023 Desa - Sistem Peminjaman Fasilitas</p>
         </footer>
     </div>
+    {{-- Page Wrapper End --}}
+    
 </body>
 </html>

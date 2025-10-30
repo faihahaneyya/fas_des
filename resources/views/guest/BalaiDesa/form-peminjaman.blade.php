@@ -1,3 +1,4 @@
+<!-- Partial View: Form Peminjaman Balai Desa Start -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -123,8 +124,8 @@
         }
 
         .alert-success {
-            background-color: #d7f7e0;
-            border: 1px solid #b9e8c8;
+            background-color: #5b7c64;
+            border: 1px solid #bbdbc5;
             color: #1d703a;
             border-radius: 6px;
             padding: 12px;
@@ -169,12 +170,16 @@
     </style>
 </head>
 <body>
+    <!-- Container Start -->
     <div class="container">
+        <!-- Header Start -->
         <div class="header">
             <h1>Form Peminjaman Fasilitas</h1>
             <div class="subtitle">Balai Desa</div>
         </div>
+        <!-- Header End -->
 
+        <!-- Alert Messages Start -->
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -190,11 +195,13 @@
                 </ul>
             </div>
         @endif
+        <!-- Alert Messages End -->
 
+        <!-- Form Start -->
         <form action="{{ route('peminjaman.store') }}" method="POST" id="peminjamanForm">
             @csrf
 
-            <!-- Data Peminjam -->
+            <!-- Section 1: Data Peminjam Start -->
             <div class="section">
                 <h2 class="section-title">1. Data Peminjam</h2>
 
@@ -225,8 +232,9 @@
                     </div>
                 </div>
             </div>
+            <!-- Section 1: Data Peminjam End -->
 
-            <!-- Data Fasilitas yang Dipinjam -->
+            <!-- Section 2: Data Fasilitas Start -->
             <div class="section">
                 <h2 class="section-title">2. Data Fasilitas yang Dipinjam</h2>
 
@@ -283,7 +291,11 @@
 
                 <button type="submit" class="btn-submit">Ajukan Peminjaman Balai Desa</button>
             </div>
+            <!-- Section 2: Data Fasilitas End -->
         </form>
+        <!-- Form End -->
     </div>
+    <!-- Container End -->
 </body>
 </html>
+<!-- Partial View: Form Peminjaman Balai Desa End -->

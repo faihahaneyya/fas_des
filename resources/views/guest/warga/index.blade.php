@@ -25,6 +25,17 @@
         .emoji {
             font-size: 45px;
         }
+        .btn-dashboard {
+            background: linear-gradient(135deg, #8bc38b 0%, #7ab87a 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+        .btn-dashboard:hover {
+            background: linear-gradient(135deg, #7ab87a 0%, #8bc38b 100%);
+        }
     </style>
 </head>
 <body>
@@ -33,9 +44,16 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-dark">📋 Data Warga</h2>
-        <a href="{{ route('warga.create') }}" class="btn btn-success shadow-sm">
-            <i class="bi bi-person-plus-fill me-2"></i>Tambah Data Warga
-        </a>
+
+        <div>
+            <a href="{{ route('dashboard') }}" class="btn btn-dashboard me-2">
+                🏠 Kembali ke Dashboard
+            </a>
+
+            <a href="{{ route('warga.create') }}" class="btn btn-success shadow-sm">
+                <i class="bi bi-person-plus-fill me-2"></i>Tambah Data Warga
+            </a>
+        </div>
     </div>
 
     <div class="row">
@@ -43,12 +61,14 @@
             <div class="col-md-4 col-lg-3 mb-4">
                 <div class="card card-custom text-center p-4">
 
-                    <!-- Emoji jenis kelamin -->
+                    <!-- Emoji jenis kelamin otomatis -->
                     <div class="emoji">
-                        @if($item->jenis_kelamin == 'Laki-laki')
+                        @if(strtolower($item->jenis_kelamin) == 'laki-laki')
+                            👨
+                        @elseif(strtolower($item->jenis_kelamin) == 'perempuan')
                             👩
                         @else
-                            👩
+                            🙂 <!-- jika gender tidak diisi -->
                         @endif
                     </div>
 
