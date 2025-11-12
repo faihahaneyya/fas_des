@@ -217,6 +217,6 @@
         </footer>
     </div>
     {{-- Page Wrapper End --}}
-    
+
 </body>
 </html>
