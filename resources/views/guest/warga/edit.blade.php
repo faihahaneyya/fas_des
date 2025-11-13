@@ -1,93 +1,186 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Data Warga')
-
 @section('content')
-<div class="container py-5">
-    <div class="card border-0 shadow-lg rounded-4 mx-auto" style="max-width: 700px;">
-        <div class="card-body p-5">
-            <h3 class="fw-bold text-center mb-4 text-success">✏️ Edit Data Warga</h3>
+<!-- Font Awesome untuk ikon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-            <form action="{{ route('warga.update', $warga->warga_id) }}" method="POST">
-                @csrf
-                @method('PUT')
+<style>
+    body {
+        background: linear-gradient(to bottom, #e6f3e6, #f9fff9);
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Nomor KTP</label>
-                    <input type="text" name="no_ktp" value="{{ old('no_ktp', $warga->no_ktp) }}"
-                           class="form-control @error('no_ktp') is-invalid @enderror">
-                    @error('no_ktp')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-container {
+        min-height: 85vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Nama Lengkap</label>
-                    <input type="text" name="nama" value="{{ old('nama', $warga->nama) }}"
-                           class="form-control @error('nama') is-invalid @enderror">
-                    @error('nama')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-card {
+        background: #ffffff;
+        width: 100%;
+        max-width: 520px;
+        padding: 40px 45px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Jenis Kelamin</label>
-                    <select name="jenis_kelamin" class="form-select @error('jenis_kelamin') is-invalid @enderror">
-                        <option value="">-- Pilih Jenis Kelamin --</option>
-                        <option value="Laki-laki" {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="Perempuan" {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
-                    @error('jenis_kelamin')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Agama</label>
-                    <input type="text" name="agama" value="{{ old('agama', $warga->agama) }}"
-                           class="form-control @error('agama') is-invalid @enderror">
-                    @error('agama')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-card h2 {
+        color: #2e7d32;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Pekerjaan</label>
-                    <input type="text" name="pekerjaan" value="{{ old('pekerjaan', $warga->pekerjaan) }}"
-                           class="form-control @error('pekerjaan') is-invalid @enderror">
-                    @error('pekerjaan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Nomor Telepon</label>
-                    <input type="text" name="telp" value="{{ old('telp', $warga->telp) }}"
-                           class="form-control @error('telp') is-invalid @enderror">
-                    @error('telp')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-label {
+        font-weight: 600;
+        color: #2e7d32;
+        width: 140px;
+        text-align: right;
+        margin-bottom: 0;
+    }
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Email</label>
-                    <input type="email" name="email" value="{{ old('email', $warga->email) }}"
-                           class="form-control @error('email') is-invalid @enderror">
-                    @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    .form-control, .form-select {
+        flex: 1;
+        border: 1px solid #c5e1c5;
+        border-radius: 8px;
+        padding: 10px;
+        transition: 0.3s;
+        font-size: 14px;
+    }
 
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ route('warga.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Kembali
-                    </a>
-                    <button type="submit" class="btn btn-success">
-                        <i class="bi bi-save2"></i> Simpan Perubahan
-                    </button>
-                </div>
-            </form>
-        </div>
+    .form-control:focus, .form-select:focus {
+        border-color: #81c784;
+        box-shadow: 0 0 5px rgba(129, 199, 132, 0.5);
+        outline: none;
+    }
+
+    .btn-custom {
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 22px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .btn-warning-custom {
+        background-color: #ffb300;
+        color: #fff;
+    }
+
+    .btn-warning-custom:hover {
+        background-color: #ffa000;
+        transform: scale(1.03);
+    }
+
+    .btn-secondary-custom {
+        background-color: #9e9e9e;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .btn-secondary-custom:hover {
+        background-color: #7e7e7e;
+        transform: scale(1.03);
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+    }
+</style>
+
+<section class="form-container">
+    <div class="form-card">
+        <h2><i class="fa-solid fa-pen-to-square"></i> Edit Data Warga</h2>
+
+        <form action="{{ route('warga.update', $warga->warga_id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+                <label class="form-label">Nomor KTP</label>
+                <input type="text" name="no_ktp" class="form-control" value="{{ old('no_ktp', $warga->no_ktp) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" name="nama" class="form-control" value="{{ old('nama', $warga->nama) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Jenis Kelamin</label>
+                <select name="jenis_kelamin" class="form-select" required>
+                    <option value="">-- Pilih Jenis Kelamin --</option>
+                    <option value="Laki-laki" {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Agama</label>
+                <select name="agama" class="form-select" required>
+                    <option value="">-- Pilih Agama --</option>
+                    <option value="Islam" {{ old('agama', $warga->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                    <option value="Kristen" {{ old('agama', $warga->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                    <option value="Katolik" {{ old('agama', $warga->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                    <option value="Hindu" {{ old('agama', $warga->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                    <option value="Buddha" {{ old('agama', $warga->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                    <option value="Konghucu" {{ old('agama', $warga->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Pekerjaan</label>
+                <input type="text" name="pekerjaan" class="form-control" value="{{ old('pekerjaan', $warga->pekerjaan) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">No. Telepon</label>
+                <input type="text" name="telp" class="form-control" value="{{ old('telp', $warga->telp) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Alamat Email</label>
+                <input type="email" name="email" class="form-control" value="{{ old('email', $warga->email) }}" required>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-custom btn-warning-custom">
+                    <i class="fa-solid fa-rotate"></i> Update
+                </button>
+
+                <a href="{{ route('warga.index') }}" class="btn-secondary-custom">
+                    <i class="fa-solid fa-arrow-left"></i> Batal
+                </a>
+            </div>
+        </form>
     </div>
-</div>
+</section>
 @endsection

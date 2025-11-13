@@ -9,9 +9,9 @@ class DashboardController extends Controller
     public function index()
     {
         // Cek apakah user sudah login
-        if (!session('username')) {
-            return redirect('/auth')->with('pesan', 'Silakan login terlebih dahulu.');
-        }
+        // if (!session('username')) {
+        //     return redirect('/auth')->with('pesan', 'Silakan login terlebih dahulu.');
+        // }
 
         return view('guest.dashboard');
     }

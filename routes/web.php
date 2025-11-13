@@ -11,9 +11,10 @@ use App\Http\Controllers\PeminjamanController;
 // =========================
 // DASHBOARD
 // =========================
-Route::get('/', function () {
-    return view('guest.dashboard');
-})->name('dashboard');
+// Route::get('/', function () {
+//     return view('guest.dashboard');
+// })->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/dashboard', function () {
     return view('guest.dashboard');
