@@ -204,7 +204,6 @@
                 <button type="submit" class="btn-custom btn-success-custom">
                     <i class="fa-solid fa-save"></i> Simpan Data
                 </button>
-
                 <a href="{{ route('warga.index') }}" class="btn-secondary-custom">
                     <i class="fa-solid fa-arrow-left"></i> Kembali
                 </a>

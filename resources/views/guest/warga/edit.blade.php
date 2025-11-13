@@ -175,7 +175,6 @@
                 <button type="submit" class="btn-custom btn-warning-custom">
                     <i class="fa-solid fa-rotate"></i> Update
                 </button>
-
                 <a href="{{ route('warga.index') }}" class="btn-secondary-custom">
                     <i class="fa-solid fa-arrow-left"></i> Batal
                 </a>

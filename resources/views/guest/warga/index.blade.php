@@ -49,7 +49,6 @@
             <a href="{{ route('dashboard') }}" class="btn btn-dashboard me-2">
                 🏠 Kembali ke Dashboard
             </a>
-
             <a href="{{ route('warga.create') }}" class="btn btn-success shadow-sm">
                 <i class="bi bi-person-plus-fill me-2"></i>Tambah Data Warga
             </a>
