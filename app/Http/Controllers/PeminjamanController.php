@@ -11,7 +11,7 @@ class PeminjamanController extends Controller
     // Menampilkan form peminjaman
     public function create()
     {
-        return view('guest.BalaiDesa.form-peminjaman');
+        return view('layouts.guest.BalaiDesa.form-peminjaman');
     }
 
     // Menyimpan data peminjaman
@@ -55,7 +55,7 @@ class PeminjamanController extends Controller
     // Menampilkan halaman sukses
     public function success()
     {
-        return view('guest.BalaiDesa.success');
+        return view('layouts.guest.BalaiDesa.success');
     }
 
     // Menampilkan daftar peminjaman (untuk admin)
