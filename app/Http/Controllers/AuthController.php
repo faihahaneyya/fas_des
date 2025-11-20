@@ -16,7 +16,7 @@ class AuthController extends Controller
         if (session()->has('email')) {
             return redirect()->route('dashboard');
         }
-        return view('guest.formlogin');
+        return view('layouts.guest.formlogin');
     }
 
     /**
@@ -62,7 +62,7 @@ class AuthController extends Controller
         if (session()->has('email')) {
             return redirect()->route('dashboard');
         }
-        return view('guest.formregister');
+        return view('layouts.guest.formregister');
     }
 
     /**
@@ -138,7 +138,7 @@ class AuthController extends Controller
     }
 
     // ✅ Redirect ke halaman index dengan pesan sukses
-    return redirect()->route('users.index')->with('pesan', 'Data user berhasil diperbarui!');
+    return redirect()->route('pages.users.index')->with('pesan', 'Data user berhasil diperbarui!');
 }
 
 }

@@ -13,6 +13,6 @@ class DashboardController extends Controller
         //     return redirect('/auth')->with('pesan', 'Silakan login terlebih dahulu.');
         // }
 
-        return view('guest.dashboard');
+        return view('layouts.guest.dashboard');
     }
 }

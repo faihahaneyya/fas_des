@@ -16,22 +16,22 @@ use App\Http\Controllers\PeminjamanController;
 // })->name('dashboard');
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('guest.dashboard');
-});
+// Route::get('/dashboard', function () {
+//     return view('layouts.guest.dashboard');
+// });
 
 // =========================
 // HALAMAN TENTANG
 // =========================
 Route::get('/tentang', function () {
-    return view('guest.tentang');
+    return view('layouts.guest.tentang');
 })->name('tentang');
 
 // =========================
 // HALAMAN KONTAK
 // =========================
 Route::get('/kontak', function () {
-    return view('guest.kontak');
+    return view('layouts.guest.kontak');
 })->name('kontak');
 
 // =========================
