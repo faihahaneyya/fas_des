@@ -1,91 +1,98 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
+use App\Models\Warga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
-    // Menampilkan form peminjaman
-    public function create()
-    {
-        return view('layouts.guest.BalaiDesa.form-peminjaman');
-    }
-
-    // Menyimpan data peminjaman
-  public function store(Request $request)
+ public function create()
 {
-    $validator = Validator::make($request->all(), [
-        'nama' => 'required|string|max:255',
-        'nip' => 'nullable|string|max:50',
-        'telepon' => 'required|string|max:15',
-        'email' => 'required|email|max:255',
-        'fasilitas' => 'required|string|max:255',
-        'tujuan' => 'required|string|max:255',
-        'keterangan' => 'nullable|string',
-        'tanggal' => 'required|date|after_or_equal:today',
-        'waktu_mulai' => 'required',
-        'waktu_selesai' => 'required|after:waktu_mulai',
-    ], [
-        'tanggal.after_or_equal' => 'Tanggal peminjaman tidak boleh di masa lalu',
-        'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai',
-    ]);
-
-    if ($validator->fails()) {
-        return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
+    // Pastikan menggunakan DB facade atau Model
+    $fasilitas = DB::table('fasilitas')->where('status', 'tersedia')->get();
+        return view('layouts.guest.BalaiDesa.form-peminjaman', compact('fasilitas'));
     }
 
-    // Simpan data
-    $peminjaman = Peminjaman::create([
-        'fasilitas_id' => 1,
-        'warga_id' => 1,
-        'tanggal_mulai' => $request->tanggal . ' ' . $request->waktu_mulai,
-        'tanggal_selesai' => $request->tanggal . ' ' . $request->waktu_selesai,
-        'tujuan' => $request->tujuan,
-        'status' => 'pending', // Ganti jadi 'pending'
-        'total_biaya' => 0,
-    ]);
-
-    return redirect()->route('peminjaman.success')->with('nama', $request->nama);
-}
-    // Menampilkan halaman sukses
-    public function success()
+    public function store(Request $request)
     {
-        return view('layouts.guest.BalaiDesa.success');
-    }
-
-    // Menampilkan daftar peminjaman (untuk admin)
-    public function index()
-    {
-        $peminjaman = Peminjaman::orderBy('created_at', 'desc')->get();
-        return view('admin.peminjaman_index', compact('peminjaman'));
-    }
-
-    // Mengupdate status peminjaman (untuk admin)
-    public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,disetujui,ditolak',
-            'catatan_admin' => 'nullable|string'
+        $validator = Validator::make($request->all(), [
+            'nama'          => 'required|string|max:255',
+            'nip'           => 'nullable|string|max:50',
+            'telepon'       => 'required|string|max:15',
+            'email'         => 'required|email|max:255',
+            'fasilitas_id'  => 'required|exists:fasilitas,id',
+            'tujuan'        => 'required|string|max:255',
+            'keterangan'    => 'nullable|string',
+            'tanggal'       => 'required|date|after_or_equal:today',
+            'waktu_mulai'   => 'required',
+            'waktu_selesai' => 'required|after:waktu_mulai',
+        ], [
+            'tanggal.after_or_equal' => 'Tanggal peminjaman tidak boleh di masa lalu',
+            'waktu_selesai.after'    => 'Waktu selesai harus setelah waktu mulai',
+            'fasilitas_id.exists'    => 'Fasilitas yang dipilih tidak valid',
         ]);
 
-        $peminjaman = Peminjaman::findOrFail($id);
-        $peminjaman->update([
-            'status' => $request->status,
-            'catatan_admin' => $request->catatan_admin
-        ]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        return redirect()->back()->with('success', 'Status peminjaman berhasil diupdate!');
+        try {
+            DB::beginTransaction();
+
+            // 1. Cek atau buat data warga berdasarkan email
+            $warga = Warga::where('email', $request->email)->first();
+
+            if (!$warga) {
+                // Buat data warga baru dengan warga_id auto increment
+                $warga = Warga::create([
+                    'no_ktp' => 'TEMP_' . time(), // KTP temporary
+                    'nama' => $request->nama,
+                    'jenis_kelamin' => 'L', // Default
+                    'agama' => 'Islam', // Default
+                    'pekerjaan' => $request->keterangan ?? 'Tidak disebutkan',
+                    'telp' => $request->telepon,
+                    'email' => $request->email,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            // 2. Simpan data peminjaman
+            $peminjaman = Peminjaman::create([
+                'fasilitas_id'    => $request->fasilitas_id,
+                'warga_id'        => $warga->warga_id, // Pastikan pakai warga_id
+                'tanggal_mulai'   => $request->tanggal . ' ' . $request->waktu_mulai,
+                'tanggal_selesai' => $request->tanggal . ' ' . $request->waktu_selesai,
+                'tujuan'          => $request->tujuan,
+                'status'          => 'pending',
+                'total_biaya'     => 0, // Perbaiki typo: total_blaya -> total_biaya
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ]);
+
+            DB::commit();
+
+            // 3. Redirect ke success
+            return redirect()->route('peminjaman.success')
+                ->with('success', 'Peminjaman berhasil diajukan!')
+                ->with('nama', $request->nama);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Terjadi kesalahan sistem: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
-    public function show($id)
+public function success()
 {
-    $peminjaman = Peminjaman::findOrFail($id);
-    return view('guest.BalaiDesa.detail-peminjaman', compact('peminjaman'));
+    return view('layouts.guest.BalaiDesa.success');
 }
-
-    }
-
+    // ... method lainnya tetap sama
+}

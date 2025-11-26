@@ -88,3 +88,4 @@ Route::get('/peminjaman/success', [PeminjamanController::class, 'success'])
 // Resource route untuk peminjaman (CRUD otomatis)
 Route::resource('peminjaman', PeminjamanController::class)
     ->except(['create']); // create khusus sudah ada di /BalaiDesa/form-peminjaman
+    

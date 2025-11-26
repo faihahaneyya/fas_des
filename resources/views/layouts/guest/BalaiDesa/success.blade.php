@@ -36,41 +36,83 @@
             margin-top: 35px;
             animation: fadeUp 1.2s ease forwards;
             animation-delay: 1.2s;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         /* Tombol */
         .btn-custom {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
             color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(129, 199, 132, 0.5);
-            margin: 0 10px;
-            transition: all 0.3s ease;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            margin: 0 5px;
+            transition: all 0.4s ease;
+            min-width: 200px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Efek hover yang smooth */
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-custom:hover::before {
+            left: 100%;
         }
 
         /* Tombol Form */
         .btn-form {
-            background-color: #81c784;
+            background: linear-gradient(135deg, #81c784, #66bb6a);
+            border: 2px solid #4caf50;
         }
 
         .btn-form:hover {
-            transform: scale(1.08);
-            background-color: #66bb6a;
-            box-shadow: 0 0 18px rgba(102, 187, 106, 0.7);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(102, 187, 106, 0.6);
+            background: linear-gradient(135deg, #66bb6a, #4caf50);
         }
 
-        /* Tombol Dashboard (warna lebih gelap sedikit) */
+        /* Tombol Dashboard (warna lebih gelap dan menarik) */
         .btn-dashboard {
-            background-color: #5aa46e;
+            background: linear-gradient(135deg, #5d9cec, #4a89dc);
+            border: 2px solid #3b7ddd;
         }
 
         .btn-dashboard:hover {
-            transform: scale(1.08);
-            background-color: #4b8f5c;
-            box-shadow: 0 0 18px rgba(75, 143, 92, 0.7);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(77, 139, 245, 0.6);
+            background: linear-gradient(135deg, #4a89dc, #3b7ddd);
+        }
+
+        /* Efek klik */
+        .btn-custom:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Icon untuk tombol (opsional) */
+        .btn-custom i {
+            margin-right: 8px;
+            font-size: 1.2rem;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -85,7 +127,23 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-custom {
+                min-width: 250px;
+                margin: 8px 0;
+            }
+        }
     </style>
+
+    <!-- Font Awesome untuk icon (opsional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Konten Pemberitahuan Start -->
@@ -94,9 +152,13 @@
 
     <!-- Tombol Aksi Start -->
     <div class="btn-group">
-        <a href="{{ route('BalaiDesa.form-peminjaman') }}" class="btn-custom btn-form">Kembali ke Form</a>
+        <a href="{{ route('BalaiDesa.form-peminjaman') }}" class="btn-custom btn-form">
+            <i class="fas fa-arrow-left"></i> Kembali ke Form
+        </a>
 
-        <a href="/dashboard" class="btn-custom btn-dashboard">Kembali ke Dashboard</a>
+       <a href="{{ route('dashboard') }}" class="btn-custom btn-dashboard">
+    <i class="fas fa-tachometer-alt"></i> Kembali ke Dashboard
+</a>
     </div>
     <!-- Tombol Aksi End -->
     <!-- Konten Pemberitahuan End -->

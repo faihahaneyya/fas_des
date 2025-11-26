@@ -9,9 +9,10 @@ class Fasilitas extends Model
 {
     use HasFactory;
 
-    protected $table = 'fasilitas';
+    protected $table = 'fasilitas'; // table
     protected $primaryKey = 'id';
-    protected $fillable = [
+    protected $fillable = [ // yg bisa terisi
+
         'nama_fasilitas',
         'kapasitas',
         'lokasi',

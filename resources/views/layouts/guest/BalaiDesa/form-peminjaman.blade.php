@@ -1,6 +1,7 @@
 <!-- Partial View: Form Peminjaman Balai Desa Start -->
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,7 +79,9 @@
             font-weight: 500;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #c9e8d3;
@@ -88,7 +91,9 @@
             transition: all 0.3s ease;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             border-color: #74d39c;
             outline: none;
             box-shadow: 0 0 0 3px rgba(91, 209, 138, 0.25);
@@ -149,26 +154,69 @@
         }
 
         @keyframes fadeInBody {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- Container Start -->
     <div class="container">
@@ -180,16 +228,16 @@
         <!-- Header End -->
 
         <!-- Alert Messages Start -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
-        @if($errors->any())
+        @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
-                    @foreach($errors->all() as $error)
+                    @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
@@ -235,18 +283,33 @@
             <!-- Section 1: Data Peminjam End -->
 
             <!-- Section 2: Data Fasilitas Start -->
+            <!-- Section 2: Data Fasilitas Start -->
             <div class="section">
                 <h2 class="section-title">2. Data Fasilitas yang Dipinjam</h2>
 
                 <div class="form-group">
-                    <label for="fasilitas">Nama Fasilitas <span class="required">*</span></label>
-                    <select id="fasilitas" name="fasilitas" required>
+                    <label for="fasilitas_id">Nama Fasilitas <span class="required">*</span></label>
+                    <select id="fasilitas_id" name="fasilitas_id" required>
                         <option value="">-- Pilih Fasilitas --</option>
-                        <option value="Balai Desa" {{ old('fasilitas') == 'Balai Desa' ? 'selected' : '' }}>Balai Desa</option>
-                        <option value="Aula Serbaguna" {{ old('fasilitas') == 'Aula Serbaguna' ? 'selected' : '' }}>Aula Serbaguna</option>
-                        <option value="Perpustakaan" {{ old('fasilitas') == 'Perpustakaan' ? 'selected' : '' }}>Perpustakaan</option>
-                        <option value="Pajjam Sekarama" {{ old('fasilitas') == 'Pajjam Sekarama' ? 'selected' : '' }}>Pajjam Sekarama</option>
+                        @if (isset($fasilitas) && $fasilitas->count() > 0)
+                            @foreach ($fasilitas as $item)
+                                <option value="{{ $item->id }}"
+                                    {{ old('fasilitas_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama_fasilitas }} - {{ $item->lokasi }}
+                                    (Kapasitas: {{ $item->kapasitas }} orang)
+                                </option>
+                            @endforeach
+                        @else
+                            <!-- Fallback jika data tidak ada -->
+                            <option value="1">Balai Desa - Gedung Utama Balai Desa</option>
+                            <option value="2">Aula Serbaguna - Lantai 1 Aula Serbaguna</option>
+                            <option value="3">Perpustakaan - Sayap Barat Perpustakaan</option>
+                            <option value="4">Pajjam Sekarama - Area Pajjam Sekarama</option>
+                        @endif
                     </select>
+                    @error('fasilitas_id')
+                        <div class="error">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -254,10 +317,12 @@
                     <select id="tujuan" name="tujuan" required>
                         <option value="">-- Pilih Tujuan --</option>
                         <option value="Seminar" {{ old('tujuan') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                        <option value="Pelatihan" {{ old('tujuan') == 'Pelatihan' ? 'selected' : '' }}>Pelatihan</option>
+                        <option value="Pelatihan" {{ old('tujuan') == 'Pelatihan' ? 'selected' : '' }}>Pelatihan
+                        </option>
                         <option value="Rapat" {{ old('tujuan') == 'Rapat' ? 'selected' : '' }}>Rapat</option>
                         <option value="Ujian" {{ old('tujuan') == 'Ujian' ? 'selected' : '' }}>Ujian</option>
-                        <option value="Pernikahan" {{ old('tujuan') == 'Pernikahan' ? 'selected' : '' }}>Pernikahan</option>
+                        <option value="Pernikahan" {{ old('tujuan') == 'Pernikahan' ? 'selected' : '' }}>Pernikahan
+                        </option>
                         <option value="Hajatan" {{ old('tujuan') == 'Hajatan' ? 'selected' : '' }}>Hajatan</option>
                         <option value="Lainnya" {{ old('tujuan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
@@ -278,13 +343,15 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="waktu_mulai">Waktu Mulai <span class="required">*</span></label>
-                            <input type="time" id="waktu_mulai" name="waktu_mulai" value="{{ old('waktu_mulai') }}" required>
+                            <input type="time" id="waktu_mulai" name="waktu_mulai" value="{{ old('waktu_mulai') }}"
+                                required>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="waktu_selesai">Waktu Selesai <span class="required">*</span></label>
-                            <input type="time" id="waktu_selesai" name="waktu_selesai" value="{{ old('waktu_selesai') }}" required>
+                            <input type="time" id="waktu_selesai" name="waktu_selesai"
+                                value="{{ old('waktu_selesai') }}" required>
                         </div>
                     </div>
                 </div>
@@ -297,5 +364,6 @@
     </div>
     <!-- Container End -->
 </body>
+
 </html>
 <!-- Partial View: Form Peminjaman Balai Desa End -->
