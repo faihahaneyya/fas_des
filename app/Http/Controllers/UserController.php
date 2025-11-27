@@ -7,15 +7,47 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // 🧭 Halaman daftar user
-    public function index()
+    // 🧭 Halaman daftar user dengan pagination, search, dan filter
+    public function index(Request $request)
     {
-        $users = User::all();
+        $query = User::query();
+
+        // SEARCH - berdasarkan nama atau email
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // FILTER - berdasarkan status verifikasi email
+        if ($request->has('email_verified') && $request->email_verified !== '') {
+            if ($request->email_verified == 'verified') {
+                $query->whereNotNull('email_verified_at');
+            } elseif ($request->email_verified == 'unverified') {
+                $query->whereNull('email_verified_at');
+            }
+        }
+
+        // FILTER - berdasarkan tanggal dibuat
+        if ($request->has('sort') && !empty($request->sort)) {
+            if ($request->sort == 'newest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($request->sort == 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        // PAGINATION - 15 data per halaman
+        $users = $query->paginate(15);
+
         return view('pages.users.index', compact('users'));
     }
 
-    // ➕ Form tambah user
-    public function create()
+     public function create()
     {
         return view('pages.users.create');
     }
